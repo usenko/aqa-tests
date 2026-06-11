@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"test": "npx playwright test",
-		"test ui": "npx playwright test --ui",
+		"ui-e2e": "npx playwright test --project=e2e-tests",
+		"test-ui": "npx playwright test --ui",
 		"api": "npx playwright test --project=api-tests"
 	},
 	"keywords": [],

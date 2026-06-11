@@ -14,8 +14,8 @@ export default class RegisterPage {
 		this.submitRegistration = page.locator("[id='register-button']");
 	}
 
-	async navigate() {
-		await this.page.goto("https://aqa-app.vercel.app/login");
+	async openLoginPage() {
+		await this.page.goto("/login");
 	}
 
 	async fillRegistrationForm(userData) {

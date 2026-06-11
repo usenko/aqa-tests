@@ -20,15 +20,7 @@ export default class CheckoutPage {
 		await this.payNowBtn.click();
 	}
 
-	async successOrderMessage() {
-		await expect(this.successOrder).toBeVisible({ timeout: 8000 });
-		await expect(this.page).toHaveURL(
-			"https://aqa-app.vercel.app/checkout",
-		);
-	}
-
 	async goToMyAccount() {
 		await this.myAccountButton.click();
-		await expect(this.page).toHaveURL("https://aqa-app.vercel.app/account");
 	}
 }
