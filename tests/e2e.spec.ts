@@ -11,7 +11,14 @@ import MyAccountPage from "../page-object/MyAccount.page";
 dotenv.config({ path: ".env" });
 
 test.setTimeout(60000);
-test.describe("End-to-end tests", () => {
+test.describe("E2E: order flow", () => {
+	test.beforeAll(async ({}) => {
+		console.log("Starting E2E tests");
+		console.log(`Base URL: ${process.env.BASE_URL}`);
+	});
+	test.beforeEach(async () => {
+		console.log("BeforeEach: ${process.env.UI_BASE_URL}");
+	});
 	test("", async ({ page }) => {
 		const registerPage = new RegisterPage(page);
 		const loginPage = new LoginPage(page);
