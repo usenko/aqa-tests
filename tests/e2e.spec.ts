@@ -19,7 +19,19 @@ test.describe("E2E: order flow", () => {
 	test.beforeEach(async () => {
 		console.log("BeforeEach: ${process.env.UI_BASE_URL}");
 	});
-	test("", async ({ page }) => {
+	test.afterEach(async ({ page }, testInfo) => {
+		if (testInfo.status !== testInfo.expectedStatus) {
+			console.log(`afterEach: test failed: ${testInfo.title}`);
+			await page.screenshot({
+				path: `test-results/$${testInfo.title}-failed.png`,
+				fullPage: true,
+			});
+		}
+	});
+	test.afterAll(async () => {
+		console.log("after ALL: cleanup test data");
+	});
+	test("Create User, login, order 2 items, payment", async ({ page }) => {
 		const registerPage = new RegisterPage(page);
 		const loginPage = new LoginPage(page);
 		const catalogPage = new CatalogPage(page);
@@ -136,7 +148,7 @@ test.describe("E2E: order flow", () => {
 
 		//await this.checkTotalItems.last().scrollIntoViewIfNeeded();
 		//await this.page.mouse.wheel()(0, 500);
-		await test.step("Verify items list", async () => {
+		await test.step("Logout", async () => {
 			await myAccountPage.logout();
 		});
 	});
