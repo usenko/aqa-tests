@@ -1,19 +1,19 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from '@playwright/test'
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-import dotenv from "dotenv";
+import dotenv from 'dotenv'
 //import path from "path";
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
-dotenv.config({ path: ".env" });
+dotenv.config({ path: '.env' })
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-	testDir: "./tests",
-	globalTeardown: "./global-teardown.ts",
+	testDir: './tests',
+	globalTeardown: './global-teardown.ts',
 	//достаточно для одного проекта, где есть только UI тесты
 	//globalSetup: './globalSetup.ts',
 
@@ -26,49 +26,52 @@ export default defineConfig({
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
-	reporter: [["html", { open: "never" }], ["list"]],
+	reporter: [['list'], ['html', { open: 'never' }]],
+	timeout: 60 * 1000,
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('')`. */
 		// baseURL: 'http://localhost:3000',
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-		trace: "on-first-retry",
+		trace: 'on-first-retry',
 		headless: process.env.CI ? true : false,
-		screenshot: "only-on-failure",
-		// launchOptions: {
-		// 	slowMo: 500,
-		// },
+		actionTimeout: 10 * 1000,
+		navigationTimeout: 10 * 1000,
+		screenshot: 'only-on-failure',
+		launchOptions: {
+			slowMo: 500,
+		},
 	},
 
 	/* Configure projects for major browsers */
 	projects: [
 		{
-			name: "chromium",
+			name: 'chromium',
 			use: {
-				...devices["Desktop Chrome"],
+				...devices['Desktop Chrome'],
 				//viewport: { width: 1920, height: 1080 },
 			},
 		},
 		{
-			name: "api-tests",
-			testMatch: "api.spec.ts",
+			name: 'api-tests',
+			testMatch: 'api.spec.ts',
 			use: {
 				baseURL: process.env.API_BASE_URL,
 			},
 		},
 		{
-			name: "e2e-tests",
-			testMatch: "e2e.spec.ts",
-			dependencies: ["setup-ui"],
+			name: 'e2e-tests',
+			testMatch: 'e2e.spec.ts',
+			dependencies: ['setup-ui'],
 			use: {
 				baseURL: process.env.UI_BASE_URL,
-				storageState: "data/storageState.json",
+				storageState: 'data/storageState.json',
 			},
 		},
 		{
-			name: "setup-ui",
-			testMatch: "auth.setup.ts",
+			name: 'setup-ui',
+			testMatch: 'auth.setup.ts',
 			use: {
 				baseURL: process.env.UI_BASE_URL,
 			},
@@ -111,4 +114,4 @@ export default defineConfig({
 	//   url: 'http://localhost:3000',
 	//   reuseExistingServer: !process.env.CI,
 	// },
-});
+})
