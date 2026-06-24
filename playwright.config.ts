@@ -18,13 +18,13 @@ export default defineConfig({
 	//globalSetup: './globalSetup.ts',
 
 	/* Run tests in files in parallel */
-	fullyParallel: true,
+	fullyParallel: false,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: process.env.CI ? 2 : 0,
+	retries: process.env.CI ? 1 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+	workers: process.env.CI ? 1 : 2,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [['list'], ['html', { open: 'never' }]],
 	timeout: 60 * 1000,
@@ -34,6 +34,7 @@ export default defineConfig({
 		// baseURL: 'http://localhost:3000',
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+		geolocation: { longitude: 30.5235, latitude: 50.4501 },
 		trace: 'on-first-retry',
 		headless: process.env.CI ? true : false,
 		actionTimeout: 10 * 1000,
@@ -42,17 +43,12 @@ export default defineConfig({
 		launchOptions: {
 			slowMo: 500,
 		},
+		permissions: ['geolocation'],
+		timezoneId: 'Europe/London',
 	},
 
 	/* Configure projects for major browsers */
 	projects: [
-		{
-			name: 'chromium',
-			use: {
-				...devices['Desktop Chrome'],
-				//viewport: { width: 1920, height: 1080 },
-			},
-		},
 		{
 			name: 'api-tests',
 			testMatch: 'api.spec.ts',
