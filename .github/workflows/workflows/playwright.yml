@@ -9,6 +9,10 @@ jobs:
     name: E2E tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    env: 
+      CARD_NUMBER: ${{secrets.CARD_NUMBER}}
+      CARD_DATE: ${{secrets.CARD_DATE}}
+      UI_BASE_URL: ${{secrets.UI_BASE_URL}}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -31,6 +35,8 @@ jobs:
     name: API tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    env: 
+      API_BASE_URL: ${{secrets.API_BASE_URL}}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
