@@ -13,42 +13,42 @@ dotenv.config({ path: '.env' })
  */
 export default defineConfig({
 	testDir: './tests',
+	globalTeardown: './global-teardown.ts',
 	//достаточно для одного проекта, где есть только UI тесты
 	//globalSetup: './globalSetup.ts',
 
 	/* Run tests in files in parallel */
-	fullyParallel: true,
+	fullyParallel: false,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: process.env.CI ? 2 : 0,
+	retries: process.env.CI ? 1 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+	workers: process.env.CI ? 1 : 2,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
-	reporter: 'html',
+	reporter: [['list'], ['html', { open: 'never' }]],
+	timeout: 60 * 1000,
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('')`. */
 		// baseURL: 'http://localhost:3000',
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+		geolocation: { longitude: 30.5235, latitude: 50.4501 },
 		trace: 'on-first-retry',
 		headless: process.env.CI ? true : false,
+		actionTimeout: 10 * 1000,
+		navigationTimeout: 10 * 1000,
 		screenshot: 'only-on-failure',
-		// launchOptions: {
-		// 	slowMo: 500,
-		// },
+		launchOptions: {
+			slowMo: 500,
+		},
+		permissions: ['geolocation'],
+		timezoneId: 'Europe/London',
 	},
 
 	/* Configure projects for major browsers */
 	projects: [
-		{
-			name: 'chromium',
-			use: {
-				...devices['Desktop Chrome'],
-				//viewport: { width: 1920, height: 1080 },
-			},
-		},
 		{
 			name: 'api-tests',
 			testMatch: 'api.spec.ts',

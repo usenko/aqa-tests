@@ -8,7 +8,6 @@ import MyAccountPage from '../page-object/MyAccount.page'
 
 dotenv.config({ path: '.env' })
 
-test.setTimeout(60000)
 test.describe('E2E: order flow', () => {
 	test.beforeAll(async ({}) => {
 		console.log('Starting E2E tests')
